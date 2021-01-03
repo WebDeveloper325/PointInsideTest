@@ -9,8 +9,8 @@ interface GeoInputProps {
 }
 
 export default function GeoInput({ label, value, placeholder, onChangeText }: GeoInputProps) {
-  const handleChangeText = (value: string) => {
-    onChangeText(/^[+-]?([0-9]*[.])?[0-9]*/gi.exec(value)?.[0] || '');
+  const handleChangeText = (text: string) => {
+    onChangeText(isNaN(Number(text)) ? value : text);
   };
 
   return (

@@ -46,6 +46,10 @@ export default function App() {
       const { data } = await axios.get(
         `http://api.timezonedb.com/v2.1/get-time-zone?key=${TIMEZONE_KEY}&format=json&by=position&lat=${latitude}&lng=${longitude}`,
       );
+      if (data.status === 'FAILED') {
+        throw new Error('Record not found.');
+      }
+
       setCurrentTime(data.formatted);
       setTimeZone(data.zoneName);
       setTimeZoneAbbreviation(data.abbreviation);
@@ -76,7 +80,9 @@ export default function App() {
 
       <View style={styles.resultContainer}>
         <Text style={styles.timeResult}>Current Time: {currentTime}</Text>
-        <Text style={styles.timeZoneResult}>{[timeZone, timeZoneAbbreviation].filter((value) => value).join(',')}</Text>
+        <Text style={styles.timeZoneResult}>
+          {[timeZone, timeZoneAbbreviation].filter((value) => value).join(', ')}
+        </Text>
       </View>
     </View>
   );
